@@ -1,5 +1,6 @@
 #![doc = include_str!("../README.md")]
 #![allow(clippy::type_complexity)]
+#![cfg_attr(feature = "allocator_api", feature(allocator_api))]
 
 #[cfg(feature = "arbitrary")]
 mod arbitrary;
@@ -50,7 +51,13 @@ use std::collections::hash_map::RandomState;
 use std::sync::OnceLock;
 use try_result::TryResult;
 
-pub(crate) type HashMap<K, V> = hash_table::HashTable<(K, V)>;
+cfg_if! {
+    if #[cfg(feature = "allocator_api")] {
+        pub(crate) type HashMap<K, V, A = std::alloc::Global> = hash_table::HashTable<(K, V), A>;
+    } else {
+        pub(crate) type HashMap<K, V> = hash_table::HashTable<(K, V)>;
+    }
+}
 
 // Temporary reimplementation of [`std::collections::TryReserveError`]
 // util [`std::collections::TryReserveError`] stabilises.
