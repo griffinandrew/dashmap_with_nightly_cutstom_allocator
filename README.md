@@ -37,6 +37,8 @@ perfect stability. Though `dashmap` always stays at least 1 year behind the curr
 
 - `arbitrary` - Enables support for the `arbitrary` crate.
 
+- `allocator_api` - Enables support for custom allocators via the nightly `allocator_api` feature. Requires a nightly Rust toolchain.
+
 ## Contributing
 
 DashMap gladly accepts contributions!
